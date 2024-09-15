@@ -1,0 +1,3 @@
+local isHeavenGate = true
+
+isHeavenGate = false
