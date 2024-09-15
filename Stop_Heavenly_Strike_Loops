@@ -1,3 +1,254 @@
+local heavenGate = Instance.new("ScreenGui")
+
+heavenGate.Parent = game.CoreGui
+
 local isHeavenGate = true
 
-isHeavenGate = false
+local ExitButton = Instance.new("TextButton")
+    ExitButton.Name = "CFrameExitButton"
+    ExitButton.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjust size as needed
+    ExitButton.Position = UDim2.new(0.45, 0, 0.1, 0)  -- Adjust position as needed
+    ExitButton.Text = "🅇"
+    ExitButton.TextColor3 = Color3.fromRGB(255, 255, 0)
+    ExitButton.TextScaled = true
+    ExitButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    ExitButton.BackgroundTransparency = 0.5
+    ExitButton.Font = Enum.Font.PatrickHand
+    ExitButton.Parent = heavenGate
+
+ExitButton.MouseButton1Click:Connect(function()
+    isHeavenGate = false
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "<Report>",
+            Text = "Heavenly Strike successfully shut down !",
+            Duration = 2,
+        })
+    heavenGate:Destroy()
+end)
+
+local function HeavenlyStrike()
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local CoreGui = game:GetService("StarterGui")
+local TweenService = game:GetService("TweenService")
+
+local function getRandomPlayerPosition()
+    local players = Players:GetPlayers()
+    if #players == 0 then return nil end
+
+    local randomPlayer = players[math.random(1, #players)]
+    local character = randomPlayer.Character
+    if not character then return nil end
+
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return nil end
+
+    return hrp.Position
+end
+
+local targetPosition = getRandomPlayerPosition()
+if not targetPosition then
+    warn("No valid player position found")
+    return
+end
+
+local targetORB = Instance.new("Part")
+targetORB.Parent = Workspace
+targetORB.Size = Vector3.new(0.01, 0.01, 0.01)
+targetORB.Position = targetPosition
+targetORB.Color = Color3.fromRGB(255, 0, 0)
+targetORB.Shape = Enum.PartType.Ball
+targetORB.Anchored = true
+targetORB.CanCollide = false
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Heavenly Strike",
+    Text = "TARGET LOCKED ON, STRIKE COMING IN 4 SECONDS!",
+    Duration = 2,
+})
+
+wait(4)
+
+local function getRandomOffsetPosition(basePosition, range)
+    local offsetX = math.random(-range, range)
+    local offsetZ = math.random(-range, range)
+    return basePosition + Vector3.new(offsetX, 0, offsetZ)
+end
+
+local RedLaser = Instance.new("Part")
+RedLaser.Parent = Workspace
+RedLaser.Size = Vector3.new(0.05, 999, 0.05)
+RedLaser.Anchored = true
+RedLaser.CanCollide = false
+RedLaser.Color = Color3.fromRGB(255, 0, 0)
+RedLaser.Material = Enum.Material.Neon
+RedLaser.CFrame = CFrame.new(getRandomOffsetPosition(targetPosition, 50) + Vector3.new(0, 900, 0)) * CFrame.Angles(0, math.rad(90), 0)
+
+local RedLaser1 = Instance.new("Part")
+RedLaser1.Parent = Workspace
+RedLaser1.Size = Vector3.new(0.05, 999, 0.05)
+RedLaser1.Anchored = true
+RedLaser1.CanCollide = false
+RedLaser1.Color = Color3.fromRGB(249, 100, 50)
+RedLaser1.Material = Enum.Material.Neon
+RedLaser1.CFrame = CFrame.new(getRandomOffsetPosition(targetPosition, 50) + Vector3.new(0, 900, 0)) * CFrame.Angles(0, math.rad(90), 0)
+
+local fadeInInfo = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In)
+local fadeInGoalRedLaser = {Transparency = 0}
+local fadeInGoalRedLaser1 = {Transparency = 0}
+
+local rotationSpeedLeft = math.rad(15)
+local rotationSpeedRight = math.rad(15)
+
+local function rotatePart(part, speed)
+    while part.Parent do
+        part.CFrame = part.CFrame * CFrame.Angles(0, speed, 0)
+        wait(0.05)
+    end
+end
+
+spawn(function() rotatePart(RedLaser, rotationSpeedLeft) end)
+spawn(function() rotatePart(RedLaser1, -rotationSpeedRight) end)
+
+local tweenFadeInRedLaser = TweenService:Create(RedLaser, fadeInInfo, fadeInGoalRedLaser)
+tweenFadeInRedLaser:Play()
+
+wait(0.2)
+
+local tweenFadeInRedLaser1 = TweenService:Create(RedLaser1, fadeInInfo, fadeInGoalRedLaser1)
+tweenFadeInRedLaser1:Play()
+
+local tweenInfoPosition = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalPosition = { CFrame = CFrame.new(targetPosition + Vector3.new(0, 4, 0)) * CFrame.Angles(0, math.rad(90), 0) }
+local tweenPosition = TweenService:Create(RedLaser, tweenInfoPosition, goalPosition)
+tweenPosition:Play()
+
+tweenPosition.Completed:Wait()
+
+local tweenInfoSizeColor = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalSizeColor = {
+    Size = Vector3.new(40, RedLaser.Size.Y, 40),
+    Transparency = 1,
+    Color = Color3.fromRGB(255, 165, 0)
+}
+local tweenSizeColor = TweenService:Create(RedLaser, tweenInfoSizeColor, goalSizeColor)
+tweenSizeColor:Play()
+
+local tweenInfoPosition1 = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalPosition1 = { CFrame = CFrame.new(targetPosition + Vector3.new(0, 4, 0)) * CFrame.Angles(0, math.rad(90), 0) }
+local tweenPosition1 = TweenService:Create(RedLaser1, tweenInfoPosition1, goalPosition1)
+tweenPosition1:Play()
+
+tweenPosition1.Completed:Wait()
+
+local tweenInfoSizeColor1 = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalSizeColor1 = {
+    Size = Vector3.new(30, RedLaser1.Size.Y, 30),
+    Transparency = 0.99,
+    Color = Color3.fromRGB(255, 255, 255)
+}
+local tweenSizeColor1 = TweenService:Create(RedLaser1, tweenInfoSizeColor1, goalSizeColor1)
+tweenSizeColor1:Play()
+
+wait(1)
+
+local fadeInInfo = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.In)
+local fadeInGoalRedLaser = {Transparency = 0.99}
+local fadeInGoalRedLaser1 = {Transparency = 0.99}
+
+local rotationSpeedLeft = math.rad(5)
+local rotationSpeedRight = math.rad(5)
+
+spawn(function() rotatePart(RedLaser1, rotationSpeedLeft) end)
+spawn(function() rotatePart(RedLaser, -rotationSpeedRight) end)
+
+local tweenFadeInRedLaser = TweenService:Create(RedLaser, fadeInInfo, fadeInGoalRedLaser)
+tweenFadeInRedLaser:Play()
+
+wait(0.05)
+
+local tweenFadeInRedLaser1 = TweenService:Create(RedLaser1, fadeInInfo, fadeInGoalRedLaser1)
+tweenFadeInRedLaser1:Play()
+
+local tweenInfoPosition = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalPosition = { CFrame = CFrame.new(targetPosition + Vector3.new(0, 4, 0)) * CFrame.Angles(0, math.rad(90), 0) }
+local tweenPosition = TweenService:Create(RedLaser, tweenInfoPosition, goalPosition)
+tweenPosition:Play()
+
+tweenPosition.Completed:Wait()
+
+local tweenInfoSizeColor = TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalSizeColor = {
+    Size = Vector3.new(0.1, RedLaser.Size.Y, 0.1),
+    Transparency = 0.1,
+    Color = Color3.fromRGB(255, 255, 255)
+}
+local tweenSizeColor = TweenService:Create(RedLaser, tweenInfoSizeColor, goalSizeColor)
+tweenSizeColor:Play()
+
+local sound2 = Instance.new("Sound")
+sound2.SoundId = "rbxassetid://180204650"
+sound2.Parent = Workspace
+sound2.PlaybackSpeed = 2
+sound2.Volume = 0.8
+sound2:Play()
+wait(0.2)
+
+local sound1 = Instance.new("Sound")
+sound1.SoundId = "rbxassetid://1043228969"
+sound1.Parent = Workspace
+sound1:Play()
+
+local tweenInfoPosition1 = TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalPosition1 = { CFrame = CFrame.new(targetPosition + Vector3.new(0, 4, 0)) * CFrame.Angles(0, math.rad(90), 0) }
+local tweenPosition1 = TweenService:Create(RedLaser1, tweenInfoPosition1, goalPosition1)
+tweenPosition1:Play()
+
+tweenPosition1.Completed:Wait()
+
+local tweenInfoSizeColor1 = TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+local goalSizeColor1 = {
+    Size = Vector3.new(0.05, RedLaser1.Size.Y, 0.05),
+    Transparency = 0.1,
+    Color = Color3.fromRGB(200, 190, 99)
+}
+local tweenSizeColor1 = TweenService:Create(RedLaser1, tweenInfoSizeColor1, goalSizeColor1)
+tweenSizeColor1:Play()
+
+wait(0.1)
+
+RedLaser:Destroy()
+targetORB:Destroy()
+RedLaser1:Destroy()
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Heavenly Strike",
+    Text = "Strike Successful!",
+    Duration = 2,
+})
+end
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+    HeavenlyStrike()
+    wait(0.5)
+end
