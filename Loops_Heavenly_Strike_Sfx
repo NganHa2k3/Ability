@@ -1,3 +1,31 @@
+local heavenGate = Instance.new("ScreenGui")
+
+heavenGate.Parent = game.CoreGui
+
+local isHeavenGate = true
+
+local ExitButton = Instance.new("TextButton")
+    ExitButton.Name = "CFrameExitButton"
+    ExitButton.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjust size as needed
+    ExitButton.Position = UDim2.new(0.05, 0, 0.1, 0)  -- Adjust position as needed
+    ExitButton.Text = "🅇"
+    ExitButton.TextScaled = true
+    ExitButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    ExitButton.BackgroundTransparency = 0.5
+    ExitButton.Font = Enum.Font.PatrickHand
+    ExitButton.Parent = heavenGate
+
+ExitButton.MouseButton1Click:Connect(function()
+    isHeavenGate = false
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "<Report>",
+            Text = "Heavenly Strike successfully shut down !",
+            Duration = 2,
+        })
+    heavenGate:Destroy()
+end)
+
 local function HeavenlyStrike()
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
@@ -199,8 +227,6 @@ CoreGui:SetCore("SendNotification", {
     Duration = 2,
 })
 end
-
-local isHeavenGate = true
 
 isHeavenGate = true
 while isHeavenGate do
