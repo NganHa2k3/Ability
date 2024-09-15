@@ -233,22 +233,79 @@ isHeavenGate = true
 while isHeavenGate do
     HeavenlyStrike()
     wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
-    HeavenlyStrike()
-    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
     HeavenlyStrike()
     wait(0.5)
 end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
+isHeavenGate = true
+while isHeavenGate do
+    HeavenlyStrike()
+    wait(0.5)
+end
+
+wait(1)
+
