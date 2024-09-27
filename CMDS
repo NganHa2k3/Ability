@@ -12,3 +12,13 @@ local function onPlayerChatted(message)
 end
 
 player.Chatted:Connect(onPlayerChatted)
+
+-- Check Notification --
+
+local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "《Activated: Commands Script》",
+        Text = " Typing On Chatted /s [speed] to moving faster or slower !",
+        Duration = 3,
+})
