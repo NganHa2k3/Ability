@@ -1,0 +1,14 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function onPlayerChatted(message)
+    local words = string.split(message, " ")
+
+    if words[1] == "/s" and words[2] then
+        local speed = words[2]
+        wait(0.05)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+    end
+end
+
+player.Chatted:Connect(onPlayerChatted)
