@@ -1,0 +1,18 @@
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local TpTool = Instance.new("Tool")
+TpTool.Name = "Teleport Tool"
+TpTool.RequiresHandle = false
+TpTool.Parent = player.Backpack
+
+TpTool.Activated:Connect(function()
+    local char = player.Character or workspace:FindFirstChild(player.Name)
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    if not char or not hrp then
+        return warn("Failed to find HumanoidRootPart")
+    end
+    
+    local targetPosition = mouse.Hit.p
+    hrp.CFrame = CFrame.new(targetPosition.X, targetPosition.Y + 3, targetPosition.Z)
+end)
