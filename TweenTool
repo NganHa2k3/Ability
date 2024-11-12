@@ -1,0 +1,29 @@
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local TweenService = game:GetService("TweenService")
+
+local TpTool = Instance.new("Tool")
+TpTool.Name = "Tween Tool"
+TpTool.RequiresHandle = false
+TpTool.Parent = player.Backpack
+
+local function tweenToPosition(targetPosition)
+    local char = player.Character or workspace:FindFirstChild(player.Name)
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    if not hrp then
+        return warn("Failed to find HumanoidRootPart")
+    end
+
+    local distance = (hrp.Position - targetPosition).Magnitude
+    local timeToReach = distance / 150
+    local tweenInfo = TweenInfo.new(timeToReach, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0)
+    local tweenGoal = {Position = targetPosition}
+    local tween = TweenService:Create(hrp, tweenInfo, tweenGoal)
+    tween:Play()
+end
+
+TpTool.Activated:Connect(function()
+    local targetPosition = mouse.Hit.p
+    targetPosition = Vector3.new(targetPosition.X, targetPosition.Y + 3, targetPosition.Z)
+    tweenToPosition(targetPosition)
+end)
