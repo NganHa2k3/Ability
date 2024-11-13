@@ -1,0 +1,50 @@
+-- Assuming these are defined earlier in the script
+local PlaceId = game.PlaceId  -- The PlaceId of the game
+local JobId = game.JobId      -- The JobId of the current server (to avoid teleporting to the same server)
+
+-- Use HttpService for making the request (for Roblox Studio environment)
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+-- Fetch the list of available servers for the game
+local httprequest = http_request or syn.request or http.request  -- Default to available HTTP request method
+
+if httprequest then
+    -- Try to fetch the server list
+    local req = httprequest({
+        Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100&excludeFullGames=true", PlaceId),
+        Method = "GET"
+    })
+    
+    -- Check if the request succeeded and parse the JSON response
+    local body
+    if req.Body then
+        body = HttpService:JSONDecode(req.Body)
+    end
+
+    -- Check the response data and process it
+    if body and body.data then
+        local servers = {}
+        for i, v in next, body.data do
+            -- Ensure the server has space and is not the current server
+            if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) then
+                if v.playing < v.maxPlayers and v.id ~= JobId then
+                    table.insert(servers, 1, v.id)  -- Insert the server ID into the list
+                end
+            end
+        end
+
+        -- If there are available servers, teleport to a random one
+        if #servers > 0 then
+            local serverToTeleportTo = servers[math.random(1, #servers)]
+            TeleportService:TeleportToPlaceInstance(PlaceId, serverToTeleportTo, Players.LocalPlayer)
+        else
+            print("Can't find a server with available space.")
+        end
+    else
+        print("Failed to parse server list or no servers available.")
+    end
+else
+    print("Failed to make an HTTP request.")
+end
