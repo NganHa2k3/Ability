@@ -1,0 +1,3 @@
+-- Cut From EdgeIY --
+everyClipboard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set) function toClipboard(txt) if everyClipboard then everyClipboard(tostring(txt)) print("Clipboard message") else print("Nothing to do Clipboard") end end toClipboard("Hello")
+-- This Line Used to Copy Text to ClipBoard --
