@@ -1,0 +1,160 @@
+-- Blox Fruits Short Script --
+
+local Ark_HS
+local Ark_9, Ark_Fr, Ark_Ability_Fr, Ark_UI, Ark_FastAttack_UI, Ark_FastAttack_Delay_UI
+local ArkC_White, ArkC_Black, ArkC_Red, ArkC_Green, ArkC_Blue, ArkC_Yellow, ArkC_Skyblue, ArkC_Purple
+local ArkF_Code, ArkF_PatrickHand, ArkF_Arcade
+local ArkUI_State, Ark_Attack, fa_status
+
+ArkC_White = Color3.new(1, 1, 1)
+ArkC_Black = Color3.new(0, 0, 0)
+ArkC_Red = Color3.new(1, 0, 0)
+ArkC_Green = Color3.new(0, 1, 0)
+ArkC_Blue = Color3.new(0, 0, 1)
+ArkC_Skyblue = Color3.new(0, 1, 1)
+ArkC_Yellow = Color3.new(1, 1, 0)
+ArkC_Purple = Color3.new(1, 0, 1)
+
+ArkF_Code = Enum.Font.Code
+ArkF_Arcade = Enum.Font.Arcade
+ArkF_PatrickHand = Enum.Font.Code
+
+ArkUI_State = false
+Ark_Attack = false
+
+Ark_HS = game:GetService("HttpService")
+
+Ark_9 = Instance.new("ScreenGui")
+Ark_Fr = Instance.new("Frame")
+Ark_Ability_Fr = Instance.new("Frame")
+Ark_UI = Instance.new("TextButton")
+Ark_FastAttack_UI = Instance.new("TextButton")
+Ark_FastAttack_Delay_UI = Instance.new("TextBox")
+
+Ark_9.Name = "Ark_FastAttacking"
+Ark_9.Parent = game.CoreGui
+Ark_Fr.Parent = Ark_9
+Ark_Ability_Fr.Parent = Ark_Fr
+Ark_UI.Parent = Ark_Fr
+Ark_FastAttack_UI.Parent = Ark_Ability_Fr
+Ark_FastAttack_Delay_UI.Parent = Ark_Ability_Fr
+
+Ark_Fr.BackgroundColor3 = ArkC_Black
+Ark_Fr.BackgroundTransparency = 0
+Ark_Fr.Position = UDim2.new(0.45, 0, 0.45, 0)
+Ark_Fr.Size = UDim2.new(0.2, 0, 0.05, 0)
+Ark_Fr.Active = true
+Ark_Fr.Draggable = true
+Ark_Fr.Visible = true
+
+Ark_Ability_Fr.BackgroundColor3 = ArkC_Black
+Ark_Ability_Fr.BackgroundTransparency = 0.5
+Ark_Ability_Fr.Position = UDim2.new(0, 0, 1, 0)
+Ark_Ability_Fr.Size = UDim2.new(1, 0, 4.95, 0)
+Ark_Ability_Fr.Active = true
+Ark_Ability_Fr.Visible = false
+
+Ark_UI.BackgroundColor3 = ArkC_White
+Ark_UI.BackgroundTransparency = 0
+Ark_UI.Position = UDim2.new(0, 0, 0.1, 0)
+Ark_UI.Size = UDim2.new(0.8, 0, 0.8, 0)
+Ark_UI.TextScaled = true
+Ark_UI.TextColor3 = ArkC_Skyblue
+Ark_UI.Font = ArkF_Code
+Ark_UI.Text = "Target Enemies[OFF]"
+Ark_UI.Visible = true
+
+Ark_FastAttack_UI.BackgroundColor3 = ArkC_Black
+Ark_FastAttack_UI.BackgroundTransparency = 0.8
+Ark_FastAttack_UI.Position = UDim2.new(0.02, 0, 0.05, 0)
+Ark_FastAttack_UI.Size = UDim2.new(0.75, 0, 0.2, 0)
+Ark_FastAttack_UI.TextScaled = true
+Ark_FastAttack_UI.TextColor3 = ArkC_White
+Ark_FastAttack_UI.Font = ArkF_Code
+Ark_FastAttack_UI.Text = "Auto Attacking [OFF]"
+Ark_FastAttack_UI.Visible = true
+
+Ark_FastAttack_Delay_UI.BackgroundColor3 = ArkC_Black
+Ark_FastAttack_Delay_UI.BackgroundTransparency = 0.8
+Ark_FastAttack_Delay_UI.Position = UDim2.new(0.8, 0, 0.05, 0)
+Ark_FastAttack_Delay_UI.Size = UDim2.new(0.15, 0, 0.2, 0)
+Ark_FastAttack_Delay_UI.TextScaled = true
+Ark_FastAttack_Delay_UI.TextColor3 = ArkC_Yellow
+Ark_FastAttack_Delay_UI.Font = ArkF_Code
+Ark_FastAttack_Delay_UI.Text = ""
+Ark_FastAttack_Delay_UI.ClearTextOnFocus = true
+Ark_FastAttack_Delay_UI.PlaceholderText = "Input Attacking Delay"
+Ark_FastAttack_Delay_UI.Visible = true
+
+function save_data(s)
+    local data, json
+    data = { fa_status = s }
+    json = Ark_HS:JSONEncode(data)
+    writefile("Lappland.Arknight", json, true)
+end
+
+function read_data()
+    local success, data = pcall(readfile, "Lappland.Arknight")
+    if success then
+        local de_coded = Ark_HS:JSONDecode(data)
+        return de_coded.fa_status
+    else
+        return "Auto Attacking [OFF]"
+    end
+end
+
+pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHien2k3/Arknight/refs/heads/Source/BladeHits"))()
+    print("Successfully Loaded: Distance Auto Attack")
+end)
+
+Ark_UI.MouseButton1Click:Connect(function()
+    if ArkUI_State then
+        ArkUI_State = false
+        Ark_Ability_Fr.Visible = false
+        Ark_UI.Text = "Target Enemies[OFF]"
+    else
+        ArkUI_State = true
+        Ark_Ability_Fr.Visible = true
+        Ark_UI.Text = "Target Enemies[ON]"
+    end
+end)
+
+fa_status = read_data()
+Ark_FastAttack_UI.Text = fa_status
+
+Ark_FastAttack_UI.MouseButton1Click:Connect(function()
+    if Ark_FastAttack_UI.Text == "Auto Attacking [OFF]" then
+        save_data("Auto Attacking [ON]")
+        Ark_FastAttack_UI.Text = "Auto Attacking [ON]"
+        Ark_FastAttack_UI.TextColor3 = ArkC_Red
+        _G.Attack_Play = true
+    else
+        save_data("Auto Attacking [OFF]")
+        Ark_FastAttack_UI.Text = "Auto Attacking [OFF]"
+        Ark_FastAttack_UI.TextColor3 = ArkC_White
+        _G.Attack_Play = false
+    end
+end)
+
+Ark_FastAttack_Delay_UI.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local new_delay = tonumber(Ark_FastAttack_Delay_UI.Text)
+        _G.Attack_Delay = new_delay
+    end
+end)
+
+task.wait()
+
+if Ark_FastAttack_UI.Text == "Auto Attacking [ON]" then
+    Ark_FastAttack_UI.TextColor3 = ArkC_Red
+    _G.Attack_Play = true
+end
+
+-- Credit --
+
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "《H.Hiền Script》",
+    Text = "[Mini UI, Auto Farm (Fast Attacked)]",
+    Duration = 2.5,
+})
