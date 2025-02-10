@@ -34,7 +34,7 @@ function FastAttack_Function()
     end
     
     function FA:ExeAttack(target, t_list)
-        re_attack:FireServer(0.005)
+        re_attack:FireServer(0.05)
         re_hit:FireServer(target, t_list)
     end
     
@@ -47,7 +47,7 @@ function FastAttack_Function()
         if #potenial_t > 0 then
             self:ExeAttack(first_t or second_t, potenial_t)
         else
-            task.wait(0.05)
+            task.wait(1)
         end
     end
     
@@ -57,11 +57,18 @@ function FastAttack_Function()
         if c_tools and c_tools.ToolTip ~= "Gun" then
             self:Nearest()
         else
-            task.wait(0.05)
+            task.wait(0.1)
         end
     end
-    
-    FA:BladeHits()
+
+    function multipleBladeHits()
+        FA:BladeHits()
+        FA:BladeHits()
+        FA:BladeHits()
+        FA:BladeHits()
+    end
+
+    multipleBladeHits()
 end
 
 _G.Attack_Play = _G.Attack_Play or false
