@@ -1,25 +1,14 @@
--- Script make by NganHa2k3 for fun, enjoy --
+-- I will cleaning it soon --
 
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local CoreGui = game:GetService("StarterGui")
 local TweenService = game:GetService("TweenService")
 
-local function getRandomPlayerPosition()
-    local players = Players:GetPlayers()
-    if #players == 0 then return nil end
+local Module = {}
 
-    local randomPlayer = players[math.random(1, #players)]
-    local character = randomPlayer.Character
-    if not character then return nil end
-
-    local hrp = character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return nil end
-
-    return hrp.Position
-end
-
-local targetPosition = getRandomPlayerPosition()
+function Module.OrbitalStrike(_positionnnn)
+local targetPosition = _positionnnn
 if not targetPosition then
     warn("No valid player position found")
     return
@@ -199,3 +188,6 @@ CoreGui:SetCore("SendNotification", {
     Text = "Strike Successful!",
     Duration = 2,
 })
+end
+
+return Module
